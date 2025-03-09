@@ -1,12 +1,12 @@
-﻿using InventoryService.Models;
+﻿using InventoryProject.Models;
 
-namespace InventoryService.Helpers;
+namespace InventoryProject.Helpers;
 
 public class ItemCreation
 {
 	public List<FoodItem> CreateFood()
 	{
-		// Create 5 WeaponItem instances
+		// Create 5 FoodItem instances
 		List<FoodItem> foodItems = new List<FoodItem>
 		{
 			new FoodItem

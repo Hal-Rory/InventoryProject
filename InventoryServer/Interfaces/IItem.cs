@@ -1,4 +1,4 @@
-﻿namespace InventoryService.Interfaces;
+﻿namespace InventoryProject.Interfaces;
 
 public interface IItem
 {

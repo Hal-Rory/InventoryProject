@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace InventoryService.Swagger;
+namespace InventoryProject.Swagger;
 
 public class SwaggerDefaultResponses : IOperationFilter
 {

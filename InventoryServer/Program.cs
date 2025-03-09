@@ -1,42 +1,44 @@
-using InventoryService.Databases;
-using InventoryService.Helpers;
-using InventoryService.Swagger;
+using InventoryProject.Databases;
+using InventoryProject.Helpers;
+using InventoryProject.Services;
+using InventoryProject.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace InventoryService;
+namespace InventoryProject;
 
-public class Program
+public static class Program
 {
 	public static void Main(string[] args)
 	{
 		WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddDbContext<InventoryDbContext>(options =>
-			options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			options.UseSqlServer(builder.Configuration.GetConnectionString(HelperVariables.ConnectionString)));
+
+		builder.Services.AddScoped<ItemService>();
 
 		builder.Services.AddControllers();
-		builder.Services.AddEndpointsApiExplorer();
+
 		builder.Services.AddSwaggerGen(sg =>
 		{
 			sg.SwaggerDoc(HelperVariables.SwaggerVersion, new OpenApiInfo{Title = "InventoryApp", Version = HelperVariables.SwaggerVersion});
 			sg.OperationFilter<SwaggerDefaultResponses>();
 		});
 
-		var app = builder.Build();
+		WebApplication app = builder.Build();
 
 		if (app.Environment.IsDevelopment())
 		{
 			app.UseSwagger();
-			app.UseSwaggerUI();
+			app.UseSwaggerUI(c =>
+			{
+				c.SwaggerEndpoint($"/swagger/{HelperVariables.SwaggerVersion}/swagger.json", "InventoryApp");
+			});
 		}
-
 		app.UseHttpsRedirection();
-
 		app.UseAuthorization();
-
 		app.MapControllers();
-
 		app.Run();
 	}
 }

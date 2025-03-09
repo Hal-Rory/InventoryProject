@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using InventoryService.Helpers;
-namespace InventoryService.Models;
+using InventoryProject.Helpers;
+
+namespace InventoryProject.Models;
 public class ItemBase
 {
 	[Key]
