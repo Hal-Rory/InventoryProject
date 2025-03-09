@@ -10,7 +10,7 @@ public class Program
 {
 	public static void Main(string[] args)
 	{
-		var builder = WebApplication.CreateBuilder(args);
+		WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddDbContext<InventoryDbContext>(options =>
 			options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -19,7 +19,7 @@ public class Program
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddSwaggerGen(sg =>
 		{
-			sg.SwaggerDoc("v1", new OpenApiInfo{Title = "InventoryApp", Version = HelperVariables.SwaggerVersion});
+			sg.SwaggerDoc(HelperVariables.SwaggerVersion, new OpenApiInfo{Title = "InventoryApp", Version = HelperVariables.SwaggerVersion});
 			sg.OperationFilter<SwaggerDefaultResponses>();
 		});
 

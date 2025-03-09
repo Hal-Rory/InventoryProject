@@ -13,6 +13,9 @@ public class SwaggerDefaultResponses : IOperationFilter
 		if (actionName.Contains("GetItem"))
 		{
 			operation.Responses.TryAdd("404", new OpenApiResponse { Description = "Item not found" });
+		} else if (actionName.Contains("CreateItem"))
+		{
+			operation.Responses.TryAdd("409", new OpenApiResponse { Description = "Item cannot be added" });
 		}
 	}
 }
