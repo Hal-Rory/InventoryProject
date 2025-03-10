@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InventoryProject.Controllers;
 
 [ApiController]
-[Route($"api/{HelperVariables.SwaggerVersion}/[controller]")]
+[Route($"[controller]/{HelperVariables.SwaggerVersion}")]
 public class ItemsController : ControllerBase
 {
 	private readonly ItemService _itemService;
@@ -15,10 +15,10 @@ public class ItemsController : ControllerBase
 	{
 		_itemService = itemService;
 	}
-	[HttpGet("Get All")]
-	public async Task<ActionResult<List<ItemBase>>> GetAllItemsAsync()
+	[HttpGet("Get All Items")]
+	public async Task<ActionResult<List<ItemBase>>> GetAllItems()
     {
-	    var (items, error) = await _itemService.GetAllItemsAsync();
+	    var (items, error) = await _itemService.GetAllItems();
 
 	    if (items == null)
 	    {
@@ -31,7 +31,7 @@ public class ItemsController : ControllerBase
 	[HttpGet("Get Item")]
 	public async Task<ActionResult<ItemBase>> GetItem(string id)
 	{
-		ItemBase? item = await _itemService.GetItemByIdAsync(id);
+		ItemBase? item = await _itemService.GetItem(id);
 		if (item == null)
 		{
 			return NotFound();

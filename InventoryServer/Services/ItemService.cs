@@ -1,7 +1,6 @@
 ﻿using InventoryProject.Databases;
 using InventoryProject.Helpers;
 using InventoryProject.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryProject.Services;
@@ -15,17 +14,17 @@ public class ItemService
 		_context = context;
 	}
 
-	public async Task<ItemBase?> GetItemByIdAsync(string itemId)
+	public async Task<ItemBase?> GetItem(string itemId)
 	{
 		return await _context.Item.FindAsync(itemId);
 	}
 
-	public async Task<(List<ItemBase>?, string)> GetAllItemsAsync()
+	public async Task<(List<ItemBase>?, string)> GetAllItems()
 	{
 		try
 		{
 			List<ItemBase> items = await _context.Item.ToListAsync();
-			return (items, string.Empty); // Success, return items
+			return (items, string.Empty);
 		}
 		catch (Exception e)
 		{
@@ -52,7 +51,7 @@ public class ItemService
 		}
 		catch (DbUpdateException dbue)
 		{
-			return $"Item could not be added: {item.ItemId} {dbue.Message}";
+			return $"Item could not be added: {item.ItemId}\n{dbue.Message}";
 		}
 
 		return null;

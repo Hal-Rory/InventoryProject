@@ -8,6 +8,7 @@ public class PlayerBase
 {
 	[Key]
 	[Column(HelperVariables.PlayerId)]
-	public virtual string PlayerId { get; set; }
-	public string PlayerName { get; set; }
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public int PlayerId { get; set; }
+	public string PlayerName { get; set; } = "";
 }

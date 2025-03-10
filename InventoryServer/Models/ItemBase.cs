@@ -7,7 +7,7 @@ public class ItemBase
 {
 	[Key]
  	[Column(HelperVariables.ItemId)]
- 	public virtual string ItemId { get; set; }
- 	public string ItemDescription { get; set; }
- 	public string ItemType { get; set; }
+ 	public string ItemId { get; set; } = "";
+ 	public string ItemDescription { get; set; } = "";
+ 	public string ItemType { get; set; } = "";
 }

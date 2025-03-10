@@ -10,12 +10,24 @@ public class SwaggerDefaultResponses : IOperationFilter
 	{
 		string? actionName = context.ApiDescription.ActionDescriptor.DisplayName;
 		if(string.IsNullOrEmpty(actionName)) return;
-		if (actionName.Contains("GetItem"))
+		if (actionName.Contains("Get"))
 		{
-			operation.Responses.TryAdd("404", new OpenApiResponse { Description = "Item not found" });
-		} else if (actionName.Contains("CreateItem"))
+			if (!actionName.Contains("All"))
+			{
+				operation.Responses.TryAdd("404",
+					new OpenApiResponse
+						{ Description = $"{(actionName.Contains("Item") ? "Item" : "Player")} not found" });
+			}
+			else
+			{
+				operation.Responses.TryAdd("400",
+					new OpenApiResponse
+						{ Description = $"{(actionName.Contains("Item") ? "Items" : "Players")} not present" });
+			}
+		}
+		else if (actionName.Contains("Create"))
 		{
-			operation.Responses.TryAdd("409", new OpenApiResponse { Description = "Item cannot be added" });
+			operation.Responses.TryAdd("409", new OpenApiResponse { Description = $"{(actionName.Contains("Item") ? "Item(s)" : "Player(s)")} cannot be added" });
 		}
 	}
 }

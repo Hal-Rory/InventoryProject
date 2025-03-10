@@ -16,6 +16,7 @@ public static class Program
 		builder.Services.AddDbContext<InventoryDbContext>(options =>
 			options.UseSqlServer(builder.Configuration.GetConnectionString(HelperVariables.ConnectionString)));
 
+		builder.Services.AddScoped<PlayerService>();
 		builder.Services.AddScoped<ItemService>();
 
 		builder.Services.AddControllers();
