@@ -18,6 +18,7 @@ public static class Program
 
 		builder.Services.AddScoped<PlayerService>();
 		builder.Services.AddScoped<ItemService>();
+		builder.Services.AddScoped<InventoryService>();
 
 		builder.Services.AddControllers();
 

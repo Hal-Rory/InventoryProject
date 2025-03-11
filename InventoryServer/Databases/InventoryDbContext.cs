@@ -8,5 +8,7 @@ public class InventoryDbContext: DbContext
 	public DbSet<ItemBase> Item { get; set; }
 	public DbSet<PlayerBase> Player { get; set; }
 
+	public DbSet<InventoryItem> Inventory { get; set; }
+
 	public InventoryDbContext(DbContextOptions<InventoryDbContext> options) : base(options) { }
 }
