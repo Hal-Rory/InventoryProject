@@ -16,57 +16,44 @@ public class InventoryController : ControllerBase
 		_inventoryService = inventoryService;
 	}
 
-	[HttpPut("Create-Update/InventoryItem")]
+	/// <summary>
+	/// Creates a new item if it doesn't exist but if it does,
+	/// it modifies the existing one to update the quantity
+	/// </summary>
+	/// <param name="item"></param>
+	/// <returns></returns>
+	[HttpPost("Create/PlayerItem")]
 	public async Task<IActionResult> CreateUpdateInventoryItem(InventoryItem item)
 	{
-		string? response = await _inventoryService.CreateUpdatePlayerItem(item);
-		if(!string.IsNullOrEmpty(response)) return Conflict(response);
-		return Ok("Item updated");
-	}
-	[HttpPost("Create/InventoryItem")]
-	public async Task<IActionResult> CreateInventoryItem(InventoryItem item)
-	{
-		string? response = await _inventoryService.CreateItem(item);
-		if(!string.IsNullOrEmpty(response)) return Conflict(response);
-		return Ok("Item updated");
+		bool success = await _inventoryService.CreateUpdatePlayerItem(item);
+		return Ok($"Item {(success ? "" : "not ")}created");
 	}
 
-	[HttpGet("Get-All/PlayerInventory")]
-	public async Task<ActionResult<List<InventoryItem>>> GetAllPlayerInventory(int playerId)
+	[HttpGet("Get-All/SinglePlayerItem")]
+	public async Task<ActionResult<List<InventoryItem>>> GetAllPlayerItems(int playerId)
 	{
-		(List<InventoryItem>? items, string error) = await _inventoryService.GetAllItems(playerId);
-		if (items == null)
-		{
-			return BadRequest(new { message = error });
-		}
-
+		List<InventoryItem> items = await _inventoryService.GetAllItems(playerId);
 		return Ok(items);
 	}
 
-	[HttpGet("Get/InventoryItem")]
-	public async Task<ActionResult<InventoryItem>> GetInventoryItem(int playerId, string itemId)
+	[HttpGet("Get/PlayerItem")]
+	public async Task<ActionResult<InventoryItem>> GetPlayerItem(int playerId, string itemId)
 	{
-		InventoryItem? item = await _inventoryService.GetItem(playerId, itemId);
-		if (item == null)
-		{
-			return NotFound();
-		}
+		InventoryItem item = await _inventoryService.GetItem(playerId, itemId);
 		return Ok(item);
 	}
 
-	[HttpPut("Update/InventoryItemQuantity")]
+	[HttpPut("Update/PlayerItem")]
 	public async Task<IActionResult> UpdateInventoryItem(InventoryItem item)
 	{
-		string? response = await _inventoryService.UpdatePlayerItemQuantity(item);
-		if(!string.IsNullOrEmpty(response)) return Conflict(response);
+		await _inventoryService.UpdatePlayerItemQuantity(item);
 		return Ok("Item updated");
 	}
 
-	[HttpPut("Remove/Item")]
+	[HttpDelete("Remove/PlayerItem")]
 	public async Task<IActionResult> RemoveInventoryItem(int playerId, string itemId)
 	{
-		string? response = await _inventoryService.RemoveInventoryItem(playerId, itemId);
-		if(!string.IsNullOrEmpty(response)) return Conflict(response);
+		await _inventoryService.RemoveInventoryItem(playerId, itemId);
 		return Ok("Item removed");
 	}
 }

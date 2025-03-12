@@ -1,7 +1,6 @@
 using InventoryProject.Databases;
 using InventoryProject.Helpers;
 using InventoryProject.Services;
-using InventoryProject.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -25,10 +24,11 @@ public static class Program
 		builder.Services.AddSwaggerGen(sg =>
 		{
 			sg.SwaggerDoc(HelperVariables.SwaggerVersion, new OpenApiInfo{Title = "InventoryApp", Version = HelperVariables.SwaggerVersion});
-			sg.OperationFilter<SwaggerDefaultResponses>();
 		});
 
 		WebApplication app = builder.Build();
+
+		app.UseMiddleware<InventoryExceptionHandler>();
 
 		if (app.Environment.IsDevelopment())
 		{

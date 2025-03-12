@@ -10,25 +10,26 @@ public class PlayerController : ControllerBase
 {
 	private readonly PlayerService _PlayerService;
 
-	public PlayerController(PlayerService PlayerService)
+	public PlayerController(PlayerService playerService)
 	{
-		_PlayerService = PlayerService;
+		_PlayerService = playerService;
 	}
 
-	[HttpGet("Get All Players")]
+	[HttpPost("Create/Player")]
+	public async Task<IActionResult> CreatePlayer(string playerName)
+	{
+		bool success = await _PlayerService.CreatePlayer(new PlayerBase{PlayerName = playerName});
+		return Ok($"Player {(success ? "" : "not ")}created");
+	}
+
+	[HttpGet("Get-All/Players")]
 	public async Task<ActionResult<List<PlayerBase>>> GetAllPlayers()
 	{
-		var (players, error) = await _PlayerService.GetAllPlayers();
-
-		if (players == null)
-		{
-			return BadRequest(new { message = error });
-		}
-
+		List<PlayerBase> players = await _PlayerService.GetAllPlayers();
 		return Ok(players);
 	}
 
-	[HttpGet("Get Player")]
+	[HttpGet("Get/Player")]
 	public async Task<ActionResult<PlayerBase>> GetPlayer(int id)
 	{
 		PlayerBase? player = await _PlayerService.GetPlayer(id);
@@ -39,11 +40,10 @@ public class PlayerController : ControllerBase
 		return Ok(player);
 	}
 
-	[HttpPost("Create Player")]
-	public async Task<IActionResult> CreatePlayer(PlayerVm player)
+	[HttpDelete("Remove/Player")]
+	public async Task<IActionResult> DeletePlayer(int playerId)
 	{
-		string? response = await _PlayerService.CreatePlayer(new PlayerBase{PlayerName = player.PlayerName});
-		if(!string.IsNullOrEmpty(response)) return Conflict(response);
-		return Ok("Player created");
+		bool success = await _PlayerService.RemovePlayer(playerId);
+		return Ok($"Player{(success ? " " : "not ")}removed");
 	}
 }

@@ -14,50 +14,14 @@ public class ItemService
 		_context = context;
 	}
 
-	public async Task<ItemBase?> GetItem(string itemId)
+	public async Task<bool> CreateItem(ItemBase item)
 	{
-		return await _context.Item.FindAsync(itemId);
+		_context.Item.Add(item);
+		int result = await _context.SaveChangesAsync();
+		return result > 0;
 	}
 
-	public async Task<(List<ItemBase>?, string)> GetAllItems()
-	{
-		try
-		{
-			List<ItemBase> items = await _context.Item.ToListAsync();
-			return (items, string.Empty);
-		}
-		catch (Exception e)
-		{
-			return (null, $"An error occurred while retrieving items. {e.Message}" );
-		}
-	}
-
-	/// <summary>
-	/// Try creating an item
-	/// </summary>
-	/// <param name="item"></param>
-	/// <returns>a response from the creation process, will return null on success</returns>
-	public async Task<string?> CreateItem(ItemBase item)
-	{
-		try
-		{
-			_context.Item.Add(item);
-			int result = await _context.SaveChangesAsync();
-			if (result <= 0)
-			{
-				_context.Item.Remove(item);
-				return $"Item could not be added: {item.ItemId}";
-			}
-		}
-		catch (DbUpdateException dbue)
-		{
-			return $"Item could not be added: {item.ItemId}\n{dbue.Message}";
-		}
-
-		return null;
-	}
-
-	public async Task<int> CreateDummyItems()
+	public async Task<string> CreateDummyItems()
 	{
 		ItemCreation itemCreation = new ItemCreation();
 		int itemsAdded = 0;
@@ -73,6 +37,27 @@ public class ItemService
 			await CreateItem(new ItemBase{ItemId = weaponItem.ItemID, ItemType = "WeaponItem", ItemDescription = weaponItem.SerializeItem()});
 			itemsAdded++;
 		}
-		return itemsAdded;
+		return $"Created {itemsAdded} items";
+	}
+
+	public async Task<ItemBase?> GetItem(string itemId)
+	{
+		ItemBase? item = await _context.Item.FindAsync(itemId);
+		return item ?? throw new KeyNotFoundException($"No item with id: {itemId} was found");
+	}
+
+	public async Task<List<ItemBase>> GetAllItems()
+	{
+		List<ItemBase> items = await _context.Item.ToListAsync();
+		return items;
+	}
+
+	public async Task<bool> RemoveItem(string itemId)
+	{
+		ItemBase? item = await _context.Item.FindAsync(itemId);
+		if (item == null) throw new KeyNotFoundException($"No item with id: {itemId} was found");
+		_context.Item.Remove(item);
+		int result = await _context.SaveChangesAsync();
+		return result > 0;
 	}
 }

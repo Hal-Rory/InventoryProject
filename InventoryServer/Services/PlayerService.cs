@@ -13,45 +13,31 @@ public class PlayerService
 		_context = context;
 	}
 
+	public async Task<bool> CreatePlayer(PlayerBase player)
+	{
+		_context.Player.Add(player);
+		int result = await _context.SaveChangesAsync();
+		return result <= 0;
+	}
+
 	public async Task<PlayerBase?> GetPlayer(int playerId)
 	{
-		return await _context.Player.FindAsync(playerId);
+		PlayerBase? player = await _context.Player.FindAsync(playerId);
+		return player ?? throw new KeyNotFoundException($"No player with id: {playerId} was found");
 	}
 
-	public async Task<(List<PlayerBase>?, string)> GetAllPlayers()
+	public async Task<List<PlayerBase>> GetAllPlayers()
 	{
-		try
-		{
-			List<PlayerBase> players = await _context.Player.ToListAsync();
-			return (players, string.Empty);
-		}
-		catch (Exception e)
-		{
-			return (null, $"An error occurred while retrieving players. {e.Message}" );
-		}
+		List<PlayerBase> players = await _context.Player.ToListAsync();
+		return players;
 	}
 
-	/// <summary>
-	/// Try creating a player
-	/// </summary>
-	/// <param name="player"></param>
-	/// <returns>a response from the creation process, will return null on success</returns>
-	public async Task<string?> CreatePlayer(PlayerBase player)
+	public async Task<bool> RemovePlayer(int playerId)
 	{
-		try
-		{
-			_context.Player.Add(player);
-			int result = await _context.SaveChangesAsync();
-			if (result <= 0)
-			{
-				_context.Player.Remove(player);
-				return $"Player could not be added.";
-			}
-		}
-		catch (DbUpdateException dbue)
-		{
-			return $"Player could not be added.\n{dbue.Message}";
-		}
-		return null;
+		PlayerBase? player = await _context.Player.FindAsync(playerId);
+		if (player == null) throw new KeyNotFoundException($"No player with id: {playerId} was found");
+		_context.Player.Remove(player);
+		int result = await _context.SaveChangesAsync();
+		return result > 0;
 	}
 }

@@ -15,42 +15,39 @@ public class ItemsController : ControllerBase
 	{
 		_itemService = itemService;
 	}
-	[HttpGet("Get All Items")]
+
+	[HttpPost("Create/Item")]
+	public async Task<IActionResult> CreateItem([FromBody] ItemBase item)
+	{
+		bool success = await _itemService.CreateItem(item);
+		return Ok($"Item {(success ? "" : "not ")}created");
+	}
+
+	[HttpPost("Create/DummyItems")]
+	public async Task<IActionResult> CreateDummyItems()
+	{
+		string results = await _itemService.CreateDummyItems();
+		return Ok(results);
+	}
+
+	[HttpGet("Get-All/Items")]
 	public async Task<ActionResult<List<ItemBase>>> GetAllItems()
     {
-	    var (items, error) = await _itemService.GetAllItems();
-
-	    if (items == null)
-	    {
-		    return BadRequest(new { message = error });
-	    }
-
+	    List<ItemBase> items = await _itemService.GetAllItems();
 	    return Ok(items);
     }
 
-	[HttpGet("Get Item")]
+	[HttpGet("Get/Item")]
 	public async Task<ActionResult<ItemBase>> GetItem(string id)
 	{
 		ItemBase? item = await _itemService.GetItem(id);
-		if (item == null)
-		{
-			return NotFound();
-		}
 		return Ok(item);
 	}
 
-	[HttpPost("Create Item")]
-	public async Task<IActionResult> CreateItem(ItemBase item)
+	[HttpDelete("Remove/Item")]
+	public async Task<IActionResult> DeleteItem(string itemId)
 	{
-		string? response = await _itemService.CreateItem(item);
-		if(!string.IsNullOrEmpty(response)) return Conflict(response);
-		return Ok("Item created");
-	}
-
-	[HttpPost("Create Dummy Items")]
-	public async Task<IActionResult> CreateDummyItems()
-	{
-		int itemsAdded = await _itemService.CreateDummyItems();
-		return Ok($"Items added: {itemsAdded}");
+		bool success = await _itemService.RemoveItem(itemId);
+		return Ok($"Item{(success ? " " : "not ")}removed");
 	}
 }
