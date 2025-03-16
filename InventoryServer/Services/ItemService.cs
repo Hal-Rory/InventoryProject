@@ -1,5 +1,4 @@
 ﻿using InventoryProject.Databases;
-using InventoryProject.Helpers;
 using InventoryProject.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,25 +18,6 @@ public class ItemService
 		_context.Item.Add(item);
 		int result = await _context.SaveChangesAsync();
 		return result > 0;
-	}
-
-	public async Task<string> CreateDummyItems()
-	{
-		ItemCreation itemCreation = new ItemCreation();
-		int itemsAdded = 0;
-		foreach (FoodItem foodItem in itemCreation.CreateFood())
-		{
-			if (_context.Item.Any(i => i.ItemId == foodItem.ItemID)) continue;
-			await CreateItem(new ItemBase{ItemId = foodItem.ItemID, ItemType = "FoodItem", ItemDescription = foodItem.SerializeItem()});
-			itemsAdded++;
-		}
-		foreach (WeaponItem weaponItem in itemCreation.CreateWeapons())
-		{
-			if (_context.Item.Any(i => i.ItemId == weaponItem.ItemID)) continue;
-			await CreateItem(new ItemBase{ItemId = weaponItem.ItemID, ItemType = "WeaponItem", ItemDescription = weaponItem.SerializeItem()});
-			itemsAdded++;
-		}
-		return $"Created {itemsAdded} items";
 	}
 
 	public async Task<ItemBase?> GetItem(string itemId)

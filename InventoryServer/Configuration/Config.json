@@ -1,0 +1,38 @@
+{
+  "ApiVersion": "",
+  "CreateKeyword": "Create",
+  "GetKeyword": "Get",
+  "GetAllKeyword": "Get-All",
+  "UpdateKeyword": "Update",
+  "DeleteKeyword": "Remove",
+  "Inventory": {
+    "ControllerPath": "Inventory/{0}/{1}/{2}",
+    "Endpoints": {
+      "Create": "PlayerItem",
+      "Get": "PlayerItem",
+      "GetAll": "PlayerItems",
+      "Update": "PlayerItem",
+      "Delete": "PlayerItem"
+    }
+  },
+  "Items": {
+    "ControllerPath": "Items/{0}/{1}/{2}",
+    "Endpoints": {
+      "Create": "Item",
+      "Get": "Item?itemId=",
+      "GetAll": "Items",
+      "Update": "",
+      "Delete": "Item?itemId="
+    }
+  },
+  "Player": {
+    "ControllerPath": "Player/{0}/{1}/{2}",
+    "Endpoints": {
+      "Create": "Player",
+      "Get": "Player",
+      "GetAll": "Players",
+      "Update": "",
+      "Delete": "Player"
+    }
+  }
+}

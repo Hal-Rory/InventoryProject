@@ -20,14 +20,7 @@ public class ItemsController : ControllerBase
 	public async Task<IActionResult> CreateItem([FromBody] ItemBase item)
 	{
 		bool success = await _itemService.CreateItem(item);
-		return Ok($"Item {(success ? "" : "not ")}created");
-	}
-
-	[HttpPost("Create/DummyItems")]
-	public async Task<IActionResult> CreateDummyItems()
-	{
-		string results = await _itemService.CreateDummyItems();
-		return Ok(results);
+		return Ok($"Item{(success ? " " : " not ")}created");
 	}
 
 	[HttpGet("Get-All/Items")]
@@ -38,9 +31,9 @@ public class ItemsController : ControllerBase
     }
 
 	[HttpGet("Get/Item")]
-	public async Task<ActionResult<ItemBase>> GetItem(string id)
+	public async Task<ActionResult<ItemBase>> GetItem(string itemId)
 	{
-		ItemBase? item = await _itemService.GetItem(id);
+		ItemBase? item = await _itemService.GetItem(itemId);
 		return Ok(item);
 	}
 

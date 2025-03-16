@@ -29,7 +29,7 @@ public class InventoryController : ControllerBase
 		return Ok($"Item {(success ? "" : "not ")}created");
 	}
 
-	[HttpGet("Get-All/SinglePlayerItem")]
+	[HttpGet("Get-All/PlayerItems")]
 	public async Task<ActionResult<List<InventoryItem>>> GetAllPlayerItems(int playerId)
 	{
 		List<InventoryItem> items = await _inventoryService.GetAllItems(playerId);

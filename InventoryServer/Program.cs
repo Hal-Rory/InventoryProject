@@ -1,3 +1,4 @@
+using InventoryProject.Configuration;
 using InventoryProject.Databases;
 using InventoryProject.Helpers;
 using InventoryProject.Services;
@@ -13,8 +14,7 @@ public static class Program
 		WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddDbContext<InventoryDbContext>(options =>
-			options.UseSqlServer(builder.Configuration.GetConnectionString(HelperVariables.ConnectionString)));
-
+			options.UseSqlServer(builder.Configuration.GetConnectionString(HelperVariables.ConnectionStringKey)));
 		builder.Services.AddScoped<PlayerService>();
 		builder.Services.AddScoped<ItemService>();
 		builder.Services.AddScoped<InventoryService>();
@@ -25,6 +25,9 @@ public static class Program
 		{
 			sg.SwaggerDoc(HelperVariables.SwaggerVersion, new OpenApiInfo{Title = "InventoryApp", Version = HelperVariables.SwaggerVersion});
 		});
+
+		var configuration = builder.Configuration;
+		builder.Services.Configure<ConfigSettings>(configuration.GetSection("ConfigSettings"));
 
 		WebApplication app = builder.Build();
 
