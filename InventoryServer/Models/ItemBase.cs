@@ -9,5 +9,4 @@ public class ItemBase
  	[Column(HelperVariables.ItemId)]
  	public string ItemId { get; set; } = "";
  	public string ItemDescription { get; set; } = "";
- 	public string ItemType { get; set; } = "";
 }
