@@ -18,26 +18,26 @@ public class PlayerController : ControllerBase
 	[HttpPost("Create/Player")]
 	public async Task<IActionResult> CreatePlayer(string playerName)
 	{
-		bool success = await _PlayerService.CreatePlayer(new PlayerBase{PlayerName = playerName});
+		bool success = await _PlayerService.CreatePlayer(new Player{PlayerName = playerName});
 		return Ok($"Player {(success ? "" : "not ")}created");
 	}
 
-	[HttpGet("Get-All/Players")]
-	public async Task<ActionResult<List<PlayerBase>>> GetAllPlayers()
-	{
-		List<PlayerBase> players = await _PlayerService.GetAllPlayers();
-		return Ok(players);
-	}
-
 	[HttpGet("Get/Player")]
-	public async Task<ActionResult<PlayerBase>> GetPlayer(int id)
+	public async Task<ActionResult<Player>> GetPlayer(int playerId)
 	{
-		PlayerBase? player = await _PlayerService.GetPlayer(id);
+		Player? player = await _PlayerService.GetPlayer(playerId);
 		if (player == null)
 		{
 			return NotFound();
 		}
 		return Ok(player);
+	}
+
+	[HttpGet("Get-All/Players")]
+	public async Task<ActionResult<List<Player>>> GetAllPlayers()
+	{
+		List<Player> players = await _PlayerService.GetAllPlayers();
+		return Ok(players);
 	}
 
 	[HttpDelete("Remove/Player")]

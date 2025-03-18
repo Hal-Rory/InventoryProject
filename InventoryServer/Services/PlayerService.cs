@@ -13,28 +13,28 @@ public class PlayerService
 		_context = context;
 	}
 
-	public async Task<bool> CreatePlayer(PlayerBase player)
+	public async Task<bool> CreatePlayer(Player player)
 	{
 		_context.Player.Add(player);
 		int result = await _context.SaveChangesAsync();
-		return result <= 0;
+		return result > 0;
 	}
 
-	public async Task<PlayerBase?> GetPlayer(int playerId)
+	public async Task<Player?> GetPlayer(int playerId)
 	{
-		PlayerBase? player = await _context.Player.FindAsync(playerId);
+		Player? player = await _context.Player.FindAsync(playerId);
 		return player ?? throw new KeyNotFoundException($"No player with id: {playerId} was found");
 	}
 
-	public async Task<List<PlayerBase>> GetAllPlayers()
+	public async Task<List<Player>> GetAllPlayers()
 	{
-		List<PlayerBase> players = await _context.Player.ToListAsync();
+		List<Player> players = await _context.Player.ToListAsync();
 		return players;
 	}
 
 	public async Task<bool> RemovePlayer(int playerId)
 	{
-		PlayerBase? player = await _context.Player.FindAsync(playerId);
+		Player? player = await _context.Player.FindAsync(playerId);
 		if (player == null) throw new KeyNotFoundException($"No player with id: {playerId} was found");
 		_context.Player.Remove(player);
 		int result = await _context.SaveChangesAsync();

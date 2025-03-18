@@ -21,7 +21,7 @@ public class InventoryService
 	/// <returns></returns>
 	public async Task<bool> CreateUpdatePlayerItem(InventoryItem item)
 	{
-		bool updatePlayerItem = await CheckPlayerItem(item);
+		bool updatePlayerItem = await CheckPlayerItem(item.Player, item.Item);
 		if (!updatePlayerItem)
 		{
 			throw new KeyNotFoundException($"No inventory item {item.Item} and/or player {item.Player} exists");
@@ -36,10 +36,16 @@ public class InventoryService
 	/// <param name="playerId"></param>
 	/// <param name="itemId"></param>
 	/// <returns></returns>
-	public async Task<InventoryItem> GetItem(int playerId, string itemId)
+	public async Task<PlayerItem> GetItem(int playerId, string itemId)
 	{
-		InventoryItem? item = await _context.Inventory.SingleAsync(item =>
-			item.Player == playerId && item.Item == itemId && item.ItemQuantity > 0);
+		bool updatePlayerItem = await CheckPlayerItem(playerId, itemId);
+		if (!updatePlayerItem)
+		{
+			throw new KeyNotFoundException($"No inventory item {itemId} and/or player {playerId} exists");
+		}
+		PlayerItem item = await _context.PlayerItem
+			.FromSqlRaw("EXEC GetInventory @p0 @p1", playerId, itemId)
+			.FirstAsync();
 		return item ?? throw new KeyNotFoundException($"No inventory item {itemId} and/or player {playerId} exists");
 	}
 
@@ -47,21 +53,17 @@ public class InventoryService
 	/// Get all items from the inventory list for a player
 	/// </summary>
 	/// <param name="playerId"></param>
-	/// <returns></returns>
-	public async Task<List<InventoryItem>> GetAllItems(int playerId = -1)
+	/// <returns>A collection of item details to form the entire item</returns>
+	public async Task<List<PlayerItem>> GetAllItems(int playerId)
 	{
-		List<InventoryItem> items;
-
-		if (playerId < 0)
+		bool updatePlayerItem = await CheckPlayerItem(playerId);
+		if (!updatePlayerItem)
 		{
-			items = await _context.Inventory.ToListAsync();
+			throw new KeyNotFoundException($"No player {playerId} exists");
 		}
-		else
-		{
-			items = await _context.Inventory
-				.Where(item => item.Player == playerId && item.ItemQuantity > 0)
-				.ToListAsync();
-		}
+		List<PlayerItem> items = await _context.PlayerItem
+			.FromSqlRaw("EXEC GetAllInventory @p0", playerId)
+			.ToListAsync();
 		return items;
 	}
 
@@ -72,7 +74,7 @@ public class InventoryService
 	/// <returns></returns>
 	public async Task UpdatePlayerItemQuantity(InventoryItem item)
 	{
-		bool updatePlayerItem = await CheckPlayerItem(item);
+		bool updatePlayerItem = await CheckPlayerItem(item.Player, item.Item);
 		if (!updatePlayerItem)
 		{
 			throw new KeyNotFoundException($"No inventory item {item.Item} and/or player {item.Player} exists");
@@ -100,12 +102,13 @@ public class InventoryService
 	/// <summary>
 	/// Check that the player and item exist
 	/// </summary>
-	/// <param name="item"></param>
+	/// <param name="playerId"></param>
+	/// <param name="itemId"></param>
 	/// <returns></returns>
-	private async Task<bool> CheckPlayerItem(InventoryItem item)
+	private async Task<bool> CheckPlayerItem(int playerId = -1, string itemId = "")
 	{
-		var playerExists = await _context.Player.AnyAsync(p => p.PlayerId == item.Player);
-		var itemExists = await _context.Item.AnyAsync(i => i.ItemId == item.Item);
-		return playerExists && itemExists;
+		bool playerExists = playerId == -1 || await _context.Player.AnyAsync(p => p.PlayerId == playerId);
+		bool itemExists = string.IsNullOrEmpty(itemId) || await _context.Item.AnyAsync(i => i.ItemId == itemId);
+		return !(string.IsNullOrEmpty(itemId) && playerId == -1) && playerExists && itemExists;
 	}
 }

@@ -4,7 +4,7 @@ using InventoryProject.Helpers;
 
 namespace InventoryProject.Models;
 
-public class PlayerBase
+public class Player
 {
 	[Key]
 	[Column(HelperVariables.PlayerId)]

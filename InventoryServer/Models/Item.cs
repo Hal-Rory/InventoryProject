@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using InventoryProject.Helpers;
 
 namespace InventoryProject.Models;
-public class ItemBase
+public class Item
 {
 	[Key]
  	[Column(HelperVariables.ItemId)]

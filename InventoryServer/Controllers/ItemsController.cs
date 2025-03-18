@@ -17,25 +17,25 @@ public class ItemsController : ControllerBase
 	}
 
 	[HttpPost("Create/Item")]
-	public async Task<IActionResult> CreateItem([FromBody] ItemBase item)
+	public async Task<IActionResult> CreateItem([FromBody] Item item)
 	{
 		bool success = await _itemService.CreateItem(item);
 		return Ok($"Item{(success ? " " : " not ")}created");
 	}
 
-	[HttpGet("Get-All/Items")]
-	public async Task<ActionResult<List<ItemBase>>> GetAllItems()
-    {
-	    List<ItemBase> items = await _itemService.GetAllItems();
-	    return Ok(items);
-    }
-
 	[HttpGet("Get/Item")]
-	public async Task<ActionResult<ItemBase>> GetItem(string itemId)
+	public async Task<ActionResult<Item>> GetItem(string itemId)
 	{
-		ItemBase? item = await _itemService.GetItem(itemId);
+		Item? item = await _itemService.GetItem(itemId);
 		return Ok(item);
 	}
+
+	[HttpGet("Get-All/Items")]
+	public async Task<ActionResult<List<Item>>> GetAllItems()
+    {
+	    List<Item> items = await _itemService.GetAllItems();
+	    return Ok(items);
+    }
 
 	[HttpDelete("Remove/Item")]
 	public async Task<IActionResult> DeleteItem(string itemId)

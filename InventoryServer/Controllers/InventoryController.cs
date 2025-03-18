@@ -29,18 +29,18 @@ public class InventoryController : ControllerBase
 		return Ok($"Item {(success ? "" : "not ")}created");
 	}
 
-	[HttpGet("Get-All/PlayerItems")]
-	public async Task<ActionResult<List<InventoryItem>>> GetAllPlayerItems(int playerId)
+	[HttpGet("Get/PlayerItem")]
+	public async Task<ActionResult<PlayerItem>> GetPlayerItem(int playerId, string itemId)
 	{
-		List<InventoryItem> items = await _inventoryService.GetAllItems(playerId);
-		return Ok(items);
+		PlayerItem item = await _inventoryService.GetItem(playerId, itemId);
+		return Ok(item);
 	}
 
-	[HttpGet("Get/PlayerItem")]
-	public async Task<ActionResult<InventoryItem>> GetPlayerItem(int playerId, string itemId)
+	[HttpGet("Get-All/PlayerItems")]
+	public async Task<ActionResult<List<PlayerItem>>> GetAllPlayerItems(int playerId)
 	{
-		InventoryItem item = await _inventoryService.GetItem(playerId, itemId);
-		return Ok(item);
+		List<PlayerItem> items = await _inventoryService.GetAllItems(playerId);
+		return Ok(items);
 	}
 
 	[HttpPut("Update/PlayerItem")]

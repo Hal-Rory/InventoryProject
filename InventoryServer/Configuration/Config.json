@@ -9,10 +9,10 @@
     "ControllerPath": "Inventory/{0}/{1}/{2}",
     "Endpoints": {
       "Create": "PlayerItem",
-      "Get": "PlayerItem",
-      "GetAll": "PlayerItems",
+      "Get": "PlayerItem?playerId={0}&itemId={1}",
+      "GetAll": "PlayerItems?playerId=",
       "Update": "PlayerItem",
-      "Delete": "PlayerItem"
+      "Delete": "PlayerItem?playerId={0}&itemId={1}"
     }
   },
   "Items": {
@@ -28,11 +28,11 @@
   "Player": {
     "ControllerPath": "Player/{0}/{1}/{2}",
     "Endpoints": {
-      "Create": "Player",
-      "Get": "Player",
+      "Create": "Player?playerName=",
+      "Get": "Player?playerId=",
       "GetAll": "Players",
       "Update": "",
-      "Delete": "Player"
+      "Delete": "Player?playerId="
     }
   }
 }
