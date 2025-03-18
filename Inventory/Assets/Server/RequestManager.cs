@@ -2,7 +2,7 @@ using UnityEngine.Networking;
 
 namespace Server
 {
-	public class RequestManager
+	public static class RequestManager
 	{
 		private static string _apiUrl => ConfigLoader.Config.ApiUrl;
 
@@ -16,7 +16,7 @@ namespace Server
 			return request;
 		}
 
-		public static UnityWebRequest RequestDownloadBuilder(string apiEndpoint, string method, string query = "", bool isJson = false)
+		public static UnityWebRequest RequestQueryBuilder(string apiEndpoint, string method, string query = "", bool isJson = false)
 		{
 			UnityWebRequest request = new UnityWebRequest($"{_apiUrl}/{apiEndpoint}{query}");
 			request.method = method;

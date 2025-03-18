@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,7 @@ namespace Common.UI
 {
     public class Card : MonoBehaviour
     {
-        [SerializeField] protected Text _label;
+        [SerializeField] protected TextMeshProUGUI _label;
         [SerializeField] protected Image _icon;
         [SerializeField] private Sprite _emptyImage;
 
