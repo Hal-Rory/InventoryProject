@@ -83,7 +83,7 @@ public class InventoryService
 		InventoryItem updatedItem = await _context.Inventory
 			.FirstAsync(i => i.Player == item.Player && i.Item == item.Item);
 
-		updatedItem.ItemQuantity = item.ItemQuantity;
+		updatedItem.ItemQuantity += item.ItemQuantity;
 
 		await _context.SaveChangesAsync();
 	}

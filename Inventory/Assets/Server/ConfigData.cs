@@ -31,22 +31,5 @@ namespace Server
 		public ApiRoutes Inventory { get; set; }
 		public ApiRoutes Items { get; set; }
 		public ApiRoutes Player { get; set; }
-
-		public string Construct(ApiRoutes route, EndPoints endPoints)
-		{
-			return endPoints switch
-			{
-				EndPoints.Create => string.Format(route.ControllerPath, ApiVersion, CreateKeyword,
-					route.Endpoints.Create),
-				EndPoints.Get => string.Format(route.ControllerPath, ApiVersion, GetKeyword, route.Endpoints.Get),
-				EndPoints.GetAll => string.Format(route.ControllerPath, ApiVersion, GetAllKeyword,
-					route.Endpoints.GetAll),
-				EndPoints.Update => string.Format(route.ControllerPath, ApiVersion, UpdateKeyword,
-					route.Endpoints.Update),
-				EndPoints.Delete => string.Format(route.ControllerPath, ApiVersion, DeleteKeyword,
-					route.Endpoints.Delete),
-				_ => null
-			};
-		}
 	}
 }

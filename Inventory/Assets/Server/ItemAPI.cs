@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Controllers;
 using Newtonsoft.Json;
+using ServerItems;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,32 +13,33 @@ namespace Server
 {
 	public class ItemAPI : MonoBehaviour
 	{
-		public void CreateItem(Item item, Action<bool> responseAction = null)
+		public void API_Create(Item item, Action<bool> responseAction = null)
 		{
 			StartCoroutine(CreateItemCO(item, responseAction));
 		}
 
-		public void GetItem(string item, Action<ItemBase> responseAction = null)
+		public void API_Get(string itemId, Action<ItemBase> responseAction = null)
 		{
-			StartCoroutine(GetItemCO(item, responseAction));
+			StartCoroutine(GetItemCO(itemId, responseAction));
 		}
 
-		public void GetAllItems(Action<IEnumerable<ItemBase>> responseAction = null)
+		public void API_GetAll(Action<IEnumerable<ItemBase>> responseAction = null)
 		{
 			StartCoroutine(GetItemsCO(responseAction));
 		}
 
-		public void DeleteItem(string item, Action<bool> responseAction = null)
+		public void API_Delete(string item, Action<bool> responseAction = null)
 		{
 			StartCoroutine(DeleteItemCO(item, responseAction));
 		}
 
 		private IEnumerator CreateItemCO(Item newItem, Action<bool> responseAction = null)
 		{
+			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.Create];
 			string jsonData = JsonConvert.SerializeObject(newItem);
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(
-					ConfigLoader.Config.Construct(ConfigLoader.Config.Items, EndPoints.Create),
+					endpoint,
 					UnityWebRequest.kHttpVerbPOST,
 					Encoding.UTF8.GetBytes(jsonData),
 					true);
@@ -47,52 +50,57 @@ namespace Server
 			responseAction?.Invoke(request.result == UnityWebRequest.Result.Success);
 		}
 
-		private IEnumerator GetItemCO(string newItem, Action<ItemBase> responseAction = null)
+		private IEnumerator GetItemCO(string itemId, Action<ItemBase> responseAction = null)
 		{
+			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.Get];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
-					ConfigLoader.Config.Construct(ConfigLoader.Config.Items, EndPoints.Get),
-					UnityWebRequest.kHttpVerbGET,
-					newItem);
+					endpoint+itemId,
+					UnityWebRequest.kHttpVerbGET);
 			yield return request.SendWebRequest();
 
 			Debug.Log(request.result == UnityWebRequest.Result.Success
-				? $"{newItem} was retrieved successfully"
+				? $"{itemId} was retrieved successfully"
 				: "Error: " + request.error);
-			if (request.result != UnityWebRequest.Result.Success) yield break;
-			string jsonResponse = request.downloadHandler.text;
-			Item item = JsonConvert.DeserializeObject<Item>(jsonResponse);
-			ItemBase innerItem = JsonConvert.DeserializeObject<ItemBase>(item.ItemDescription);
-
+			ItemBase innerItem = null;
+			if (request.result == UnityWebRequest.Result.Success)
+			{
+				string jsonResponse = request.downloadHandler.text;
+				Item item = JsonConvert.DeserializeObject<Item>(jsonResponse);
+				innerItem = ItemBase.DeserializeItem(item.ItemDescription);
+			}
 			responseAction?.Invoke(innerItem);
 		}
 
 		private IEnumerator GetItemsCO(Action<IEnumerable<ItemBase>> responseAction = null)
 		{
+			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.GetAll];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
-					ConfigLoader.Config.Construct(ConfigLoader.Config.Items, EndPoints.GetAll),
+					endpoint,
 					UnityWebRequest.kHttpVerbGET);
 			yield return request.SendWebRequest();
 
 			Debug.Log(request.result == UnityWebRequest.Result.Success
 				? "all items were retrieved successfully"
 				: "Error: " + request.error);
-			if (request.result != UnityWebRequest.Result.Success) yield break;
-			string jsonResponse = request.downloadHandler.text;
-			Item[] item = JsonConvert.DeserializeObject<Item[]>(jsonResponse);
-			IEnumerable<ItemBase> innerItem = item.Select(i =>
-				JsonConvert.DeserializeObject<ItemBase>(i.ItemDescription, ServerUtilities.JsonSerializer));
-			responseAction?.Invoke(innerItem);
+			IEnumerable<ItemBase> innerItems = null;
+			if (request.result == UnityWebRequest.Result.Success)
+			{
+				string jsonResponse = request.downloadHandler.text;
+				Item[] items = JsonConvert.DeserializeObject<Item[]>(jsonResponse);
+				innerItems = items.Select(i => ItemBase.DeserializeItem(i.ItemDescription));
+			}
+			responseAction?.Invoke(innerItems);
 		}
 
 		private IEnumerator DeleteItemCO(string itemId, Action<bool> responseAction = null)
 		{
+			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.Delete];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
-					ConfigLoader.Config.Construct(ConfigLoader.Config.Items, EndPoints.Delete),
-					UnityWebRequest.kHttpVerbDELETE,
-					itemId);
+					endpoint+itemId,
+					UnityWebRequest.kHttpVerbDELETE);
 			yield return request.SendWebRequest();
 
 			Debug.Log(request.result == UnityWebRequest.Result.Success
@@ -101,11 +109,11 @@ namespace Server
 			responseAction?.Invoke(request.result == UnityWebRequest.Result.Success);
 		}
 	}
-}
 
-[Serializable]
-public class Item
-{
-	public string ItemId { get; set; } = "";
-	public string ItemDescription { get; set; } = "";
+	[Serializable]
+	public class Item
+	{
+		public string ItemId { get; set; } = "";
+		public string ItemDescription { get; set; } = "";
+	}
 }

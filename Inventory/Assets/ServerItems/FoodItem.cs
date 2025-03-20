@@ -11,5 +11,12 @@
 			CurrentJsonType = $"{nameof(WeaponItem)}";
 			return base.SerializeItem();
 		}
+
+		public override string ToString()
+		{
+			return $"{ItemName}\n" +
+			       $"Calories: {Calories}\n" +
+			       $"Expires: {ExpirationDate}";
+		}
 	}
 }

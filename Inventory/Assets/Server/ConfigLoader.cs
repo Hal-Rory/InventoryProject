@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -11,11 +12,13 @@ namespace Server
 		[SerializeField] private string _apiUrl = "";
 		[SerializeField] private string _configUrl = "";
 
-		public static ConfigData Config { get; private set; }
+		public ConfigData Config { get; private set; }
 
 		public Dictionary<EndPoints, string> InventoryEndpoints;
 		public Dictionary<EndPoints, string> ItemEndpoints;
 		public Dictionary<EndPoints, string> PlayerEndpoints;
+
+		public event Action OnConfigLoaded;
 
 		private void Awake()
 		{
@@ -37,10 +40,10 @@ namespace Server
 			InventoryEndpoints = new Dictionary<EndPoints, string>
 			{
 				{ EndPoints.Create, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Inventory.Endpoints.Create) },
-				{ EndPoints.Get, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Inventory.Endpoints.Get) },
-				{ EndPoints.GetAll, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Inventory.Endpoints.GetAll) },
-				{ EndPoints.Update, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Inventory.Endpoints.Update) },
-				{ EndPoints.Delete, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Inventory.Endpoints.Delete) }
+				{ EndPoints.Get, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.GetKeyword, Config.Inventory.Endpoints.Get) },
+				{ EndPoints.GetAll, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.GetAllKeyword, Config.Inventory.Endpoints.GetAll) },
+				{ EndPoints.Update, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Inventory.Endpoints.Update) },
+				{ EndPoints.Delete, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.DeleteKeyword, Config.Inventory.Endpoints.Delete) }
 			};
 
 			ItemEndpoints = new Dictionary<EndPoints, string>
@@ -55,11 +58,12 @@ namespace Server
 			PlayerEndpoints = new Dictionary<EndPoints, string>
 			{
 				{ EndPoints.Create, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Player.Endpoints.Create) },
-				{ EndPoints.Get, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Player.Endpoints.Get) },
-				{ EndPoints.GetAll, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Player.Endpoints.GetAll) },
-				{ EndPoints.Update, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Player.Endpoints.Update) },
-				{ EndPoints.Delete, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.CreateKeyword, Config.Player.Endpoints.Delete) }
+				{ EndPoints.Get, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.GetKeyword, Config.Player.Endpoints.Get) },
+				{ EndPoints.GetAll, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.GetAllKeyword, Config.Player.Endpoints.GetAll) },
+				{ EndPoints.Update, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Player.Endpoints.Update) },
+				{ EndPoints.Delete, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.DeleteKeyword, Config.Player.Endpoints.Delete) }
 			};
+			OnConfigLoaded?.Invoke();
 		}
 	}
 }

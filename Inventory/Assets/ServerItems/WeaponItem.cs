@@ -10,5 +10,12 @@
 			CurrentJsonType = $"{nameof(WeaponItem)}";
 			return base.SerializeItem();
 		}
+
+		public override string ToString()
+		{
+			return $"{ItemName}({(IsRanged ? "Ranged": "Melee")})\n" +
+			       $"Damage: {Damage}\n" +
+			       $"Durability: {Durability}";
+		}
 	}
 }

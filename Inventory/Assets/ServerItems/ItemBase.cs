@@ -1,17 +1,26 @@
 using Newtonsoft.Json;
+using Server;
 
-public class ItemBase : IItem
+namespace ServerItems
 {
-	public string CurrentJsonSchema { get; set; }
-	public string CurrentJsonType { get; set; }
-
-	public string ItemName { get; set; } = "";
-	public string ItemID { get; set; } = "";
-
-	public virtual string SerializeItem()
+	public class ItemBase : IItem
 	{
-		CurrentJsonSchema = ServerUtilities.CurrentJsonSchema;
-		string json = JsonConvert.SerializeObject(this, ServerUtilities.JsonSerializer);
-		return json;
+		public string CurrentJsonSchema { get; set; }
+		public string CurrentJsonType { get; set; }
+
+		public string ItemName { get; set; } = "";
+		public string ItemID { get; set; } = "";
+
+		public virtual string SerializeItem()
+		{
+			CurrentJsonSchema = ServerUtilities.CurrentJsonSchema;
+			string json = JsonConvert.SerializeObject(this, ServerUtilities.JsonSerializer);
+			return json;
+		}
+
+		public static ItemBase DeserializeItem(string item)
+		{
+			return JsonConvert.DeserializeObject<ItemBase>(item, ServerUtilities.JsonSerializer );
+		}
 	}
 }
