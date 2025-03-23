@@ -16,7 +16,7 @@ namespace UI
         private ItemBase _currentItem;
         private void OnEnable()
         {
-            GameController.Instance.ItemAPIController.API_GetAll(SetupCards);
+            GameControllerNetwork.Instance.ItemAPIController.API_GetAll(SetupCards);
             _displayPanel.SetActive(false);
         }
 
@@ -40,7 +40,7 @@ namespace UI
 
         public void AddItemToPlayerUI()
         {
-            GameController.Instance.Inventory.AddPlayerItem(_currentItem);
+            GameControllerNetwork.Instance.Inventory.AddPlayerItem(_currentItem);
         }
     }
 }

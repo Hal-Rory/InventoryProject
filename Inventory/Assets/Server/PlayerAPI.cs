@@ -33,7 +33,7 @@ namespace Server
 
 		private IEnumerator CreatePlayerCO(Player newPlayer, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.PlayerEndpoints[EndPoints.Create];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.PlayerEndpoints[EndPoints.Create];
 			string jsonData = JsonConvert.SerializeObject(newPlayer);
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(
@@ -50,7 +50,7 @@ namespace Server
 
 		private IEnumerator GetPlayerCO(int playerId, Action<Player> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.PlayerEndpoints[EndPoints.Get];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.PlayerEndpoints[EndPoints.Get];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint+playerId,
@@ -71,7 +71,7 @@ namespace Server
 
 		private IEnumerator GetPlayersCO(Action<IEnumerable<Player>> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.PlayerEndpoints[EndPoints.GetAll];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.PlayerEndpoints[EndPoints.GetAll];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint,
@@ -92,7 +92,7 @@ namespace Server
 
 		private IEnumerator DeletePlayerCO(int playerId, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.PlayerEndpoints[EndPoints.Delete];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.PlayerEndpoints[EndPoints.Delete];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint+playerId,

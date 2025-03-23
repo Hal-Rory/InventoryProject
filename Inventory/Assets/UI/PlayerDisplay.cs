@@ -6,7 +6,6 @@ using Server;
 using TMPro;
 using UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerDisplay : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class PlayerDisplay : MonoBehaviour
 	[Header("Player")]
 	[SerializeField] private TextMeshProUGUI _playerNameText;
 	[SerializeField] private TMP_InputField _playerIdInput;
-	private Player _currentPlayer => GameController.Instance.Inventory.CurrentPlayer;
+	private Player _currentPlayer => GameControllerNetwork.Instance.Inventory.CurrentPlayer;
 
 	[Header("Warning")]
 	[SerializeField] private GameObject _warningPanel;
@@ -28,7 +27,7 @@ public class PlayerDisplay : MonoBehaviour
 	[SerializeField] private GameObject _itemDisplayPanel;
 	private PlayerItem _selectedItem;
 
-	private InventoryController _inventoryController => GameController.Instance.Inventory;
+	private InventoryController _inventoryController => GameControllerNetwork.Instance.Inventory;
 
 	private void Start()
 	{
@@ -84,7 +83,7 @@ public class PlayerDisplay : MonoBehaviour
 		}
 		else
 		{
-			GameController.Instance.PlayerAPIController.API_Get(id, DisplayPlayer);
+			GameControllerNetwork.Instance.PlayerAPIController.API_Get(id, DisplayPlayer);
 		}
 	}
 
@@ -104,7 +103,7 @@ public class PlayerDisplay : MonoBehaviour
 	{
 		_inventoryController.SetCurrentPlayer(player);
 		_playerNameText.text = _currentPlayer.PlayerName;
-		GameController.Instance.InventoryAPIController.API_GetAll(player.PlayerId, SetupCards);
+		GameControllerNetwork.Instance.InventoryAPIController.API_GetAll(player.PlayerId, SetupCards);
 	}
 
 	/// <summary>

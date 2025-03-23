@@ -2,12 +2,10 @@ using Server;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 namespace Controllers
 {
-    public class GameController : MonoBehaviour
+    public class GameControllerNetwork : MonoBehaviour
     {
-        public static GameController Instance { get; private set; }
 
         public ItemAPI ItemAPIController;
         public PlayerAPI PlayerAPIController;
@@ -15,6 +13,7 @@ namespace Controllers
         public InventoryController Inventory;
         public ConfigLoader ConfigLoader;
 
+        public static GameControllerNetwork Instance { get; private set; }
         private void Awake()
         {
             if (Instance == null)

@@ -5,7 +5,7 @@ namespace Server
 {
 	public static class RequestManager
 	{
-		private static string _apiUrl => GameController.Instance.ConfigLoader.Config.ApiUrl;
+		private static string _apiUrl => GameControllerNetwork.Instance.ConfigLoader.Config.ApiUrl;
 
 		public static UnityWebRequest RequestUploadBuilder(string apiEndpoint, string method, byte[] data, bool isJson = false)
 		{

@@ -32,7 +32,7 @@ namespace Controllers
             _busy = true;
             if (CurrentPlayer.Items.Contains(item.ItemID))
             {
-                GameController.Instance.InventoryAPIController.API_Update(new InventoryItem
+                GameControllerNetwork.Instance.InventoryAPIController.API_Update(new InventoryItem
                 {
                     Item = item.ItemID,
                     ItemQuantity = quantity,
@@ -45,7 +45,7 @@ namespace Controllers
             }
             else
             {
-                GameController.Instance.InventoryAPIController.API_Create(new InventoryItem
+                GameControllerNetwork.Instance.InventoryAPIController.API_Create(new InventoryItem
                 {
                     Item = item.ItemID,
                     ItemQuantity = quantity,
@@ -63,7 +63,7 @@ namespace Controllers
         {
             if (CurrentPlayer == null || CurrentPlayer.PlayerId < 0 || _busy) return;
             _busy = true;
-            GameController.Instance.InventoryAPIController.API_Delete(CurrentPlayer.PlayerId, itemId.ItemID,
+            GameControllerNetwork.Instance.InventoryAPIController.API_Delete(CurrentPlayer.PlayerId, itemId.ItemID,
                 success =>
                 {
                     if (success) OnPlayerInventoryUpdated?.Invoke(CurrentPlayer);

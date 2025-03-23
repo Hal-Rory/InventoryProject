@@ -40,7 +40,7 @@ namespace Server
 
 		private IEnumerator CreatePlayerItemCO(InventoryItem newInventoryItem, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Create];
+			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Create];
 			string jsonData = JsonConvert.SerializeObject(newInventoryItem);
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(
@@ -57,7 +57,7 @@ namespace Server
 
 		private IEnumerator GetPlayerItemCO(int playerId, string itemId, Action<PlayerItem> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Get];
+			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Get];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					string.Format(endpoint, playerId, itemId),
@@ -79,7 +79,7 @@ namespace Server
 
 		private IEnumerator GetPlayerItemsCO(int playerId, Action<PlayerItem[]> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.InventoryEndpoints[EndPoints.GetAll];
+			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.GetAll];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint+playerId,
@@ -105,7 +105,7 @@ namespace Server
 
 		private IEnumerator UpdatePlayerItemCO(InventoryItem item, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Update];
+			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Update];
 			string jsonData = JsonConvert.SerializeObject(item);
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(
@@ -123,7 +123,7 @@ namespace Server
 
 		private IEnumerator DeletePlayerItemCO(int playerId, string itemId, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Delete];
+			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Delete];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					string.Format(endpoint, playerId, itemId),

@@ -35,7 +35,7 @@ namespace Server
 
 		private IEnumerator CreateItemCO(Item newItem, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.Create];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.ItemEndpoints[EndPoints.Create];
 			string jsonData = JsonConvert.SerializeObject(newItem);
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(
@@ -52,7 +52,7 @@ namespace Server
 
 		private IEnumerator GetItemCO(string itemId, Action<ItemBase> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.Get];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.ItemEndpoints[EndPoints.Get];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint+itemId,
@@ -74,7 +74,7 @@ namespace Server
 
 		private IEnumerator GetItemsCO(Action<IEnumerable<ItemBase>> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.GetAll];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.ItemEndpoints[EndPoints.GetAll];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint,
@@ -96,7 +96,7 @@ namespace Server
 
 		private IEnumerator DeleteItemCO(string itemId, Action<bool> responseAction = null)
 		{
-			string endpoint = GameController.Instance.ConfigLoader.ItemEndpoints[EndPoints.Delete];
+			string endpoint = GameControllerNetwork.Instance.ConfigLoader.ItemEndpoints[EndPoints.Delete];
 			UnityWebRequest request =
 				RequestManager.RequestQueryBuilder(
 					endpoint+itemId,
