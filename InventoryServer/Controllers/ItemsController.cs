@@ -37,6 +37,13 @@ public class ItemsController : ControllerBase
 	    return Ok(items);
     }
 
+	[HttpPut("Update/Item")]
+	public async Task<IActionResult> UpdateItem([FromBody] Item item)
+	{
+		bool success = await _itemService.UpdateItem(item);
+		return success ? Ok("Item updated") : BadRequest("Item was not updated");
+	}
+
 	[HttpDelete("Remove/Item")]
 	public async Task<IActionResult> DeleteItem(string itemId)
 	{

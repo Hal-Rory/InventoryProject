@@ -20,6 +20,15 @@ public class ItemService
 		return result > 0;
 	}
 
+	public async Task<bool> UpdateItem(Item otherItem)
+	{
+		Item? item = await _context.Item.FindAsync(otherItem.ItemId);
+		if (item == null) throw new KeyNotFoundException($"No item with id: {otherItem.ItemId} was found");
+		item.ItemDescription = otherItem.ItemDescription;
+		await _context.SaveChangesAsync();
+		return true;
+	}
+
 	public async Task<Item?> GetItem(string itemId)
 	{
 		Item? item = await _context.Item.FindAsync(itemId);

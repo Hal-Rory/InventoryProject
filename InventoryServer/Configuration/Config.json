@@ -21,7 +21,7 @@
       "Create": "Item",
       "Get": "Item?itemId=",
       "GetAll": "Items",
-      "Update": "",
+      "Update": "Item",
       "Delete": "Item?itemId="
     }
   },

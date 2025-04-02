@@ -7,7 +7,7 @@ public static class HelperVariables
 	/// Incremented when the content within a controller's functionality is modified
 	/// or new controller is created
 	/// </summary>
-	public const string SwaggerVersion = "v8";
+	public const string SwaggerVersion = "v9";
 
 	public const string PlayerId = "Player_ID";
 	public const string ItemId = "Item_ID";
