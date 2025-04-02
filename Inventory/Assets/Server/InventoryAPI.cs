@@ -13,6 +13,12 @@ namespace Server
 {
     public class InventoryAPI : MonoBehaviour
     {
+	    private ConfigLoader _configLoader;
+
+	    public void SetConfig(ConfigLoader configLoader)
+	    {
+		    _configLoader = configLoader;
+	    }
 	    public void API_Create(InventoryItem inventory, Action<bool> responseAction = null)
 		{
 			StartCoroutine(CreatePlayerItemCO(inventory, responseAction));
@@ -40,10 +46,10 @@ namespace Server
 
 		private IEnumerator CreatePlayerItemCO(InventoryItem newInventoryItem, Action<bool> responseAction = null)
 		{
-			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Create];
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.Create];
 			string jsonData = JsonConvert.SerializeObject(newInventoryItem);
 			UnityWebRequest request =
-				RequestManager.RequestUploadBuilder(
+				RequestManager.RequestUploadBuilder(_configLoader.Config.ApiUrl,
 					endpoint,
 					UnityWebRequest.kHttpVerbPOST,
 					Encoding.UTF8.GetBytes(jsonData),
@@ -57,9 +63,9 @@ namespace Server
 
 		private IEnumerator GetPlayerItemCO(int playerId, string itemId, Action<PlayerItem> responseAction = null)
 		{
-			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Get];
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.Get];
 			UnityWebRequest request =
-				RequestManager.RequestQueryBuilder(
+				RequestManager.RequestQueryBuilder(_configLoader.Config.ApiUrl,
 					string.Format(endpoint, playerId, itemId),
 					UnityWebRequest.kHttpVerbGET);
 			yield return request.SendWebRequest();
@@ -79,9 +85,9 @@ namespace Server
 
 		private IEnumerator GetPlayerItemsCO(int playerId, Action<PlayerItem[]> responseAction = null)
 		{
-			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.GetAll];
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.GetAll];
 			UnityWebRequest request =
-				RequestManager.RequestQueryBuilder(
+				RequestManager.RequestQueryBuilder(_configLoader.Config.ApiUrl,
 					endpoint+playerId,
 					UnityWebRequest.kHttpVerbGET);
 			yield return request.SendWebRequest();
@@ -105,10 +111,10 @@ namespace Server
 
 		private IEnumerator UpdatePlayerItemCO(InventoryItem item, Action<bool> responseAction = null)
 		{
-			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Update];
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.Update];
 			string jsonData = JsonConvert.SerializeObject(item);
 			UnityWebRequest request =
-				RequestManager.RequestUploadBuilder(
+				RequestManager.RequestUploadBuilder(_configLoader.Config.ApiUrl,
 					endpoint,
 					UnityWebRequest.kHttpVerbPUT,
 					Encoding.UTF8.GetBytes(jsonData),
@@ -123,9 +129,9 @@ namespace Server
 
 		private IEnumerator DeletePlayerItemCO(int playerId, string itemId, Action<bool> responseAction = null)
 		{
-			string endpoint = Controllers.GameControllerNetwork.Instance.ConfigLoader.InventoryEndpoints[EndPoints.Delete];
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.Delete];
 			UnityWebRequest request =
-				RequestManager.RequestQueryBuilder(
+				RequestManager.RequestQueryBuilder(_configLoader.Config.ApiUrl,
 					string.Format(endpoint, playerId, itemId),
 					UnityWebRequest.kHttpVerbDELETE);
 			yield return request.SendWebRequest();

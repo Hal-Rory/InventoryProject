@@ -1,15 +1,19 @@
+using System;
 using Newtonsoft.Json;
 using Server;
+using UnityEngine;
 
 namespace ServerItems
 {
+	[Serializable]
 	public class ItemBase : IItem
 	{
 		public string CurrentJsonSchema { get; set; }
 		public string CurrentJsonType { get; set; }
+		[field: SerializeField] public string ItemName { get; set; } = "";
+		[field: SerializeField] public string ItemID { get; set; } = "";
 
-		public string ItemName { get; set; } = "";
-		public string ItemID { get; set; } = "";
+		[field: SerializeField] public string[] Ingredients { get; set; }
 
 		public virtual string SerializeItem()
 		{

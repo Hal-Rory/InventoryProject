@@ -22,6 +22,11 @@ namespace Server
 
 		private void Awake()
 		{
+			LoadConfigObject();
+		}
+
+		public void LoadConfigObject()
+		{
 			StartCoroutine(LoadConfig());
 		}
 

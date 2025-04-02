@@ -1,10 +1,14 @@
-﻿namespace ServerItems
+﻿using System;
+using UnityEngine;
+
+namespace ServerItems
 {
+	[Serializable]
 	public class FoodItem : ItemBase
 	{
-		public int Calories { get; set; }
-		public string ExpirationDate { get; set; } = "";
-		public bool IsConsumable { get; set; }
+		[field:SerializeField] public int Calories { get; set; }
+		[field:SerializeField] public string ExpirationDate { get; set; } = "";
+		[field:SerializeField] public bool IsConsumable { get; set; }
 
 		public override string SerializeItem()
 		{
@@ -14,7 +18,7 @@
 
 		public override string ToString()
 		{
-			return $"{ItemName}\n" +
+			return $"{ItemName}({(IsConsumable ? "": "Not")}Consumable)\n" +
 			       $"Calories: {Calories}\n" +
 			       $"Expires: {ExpirationDate}";
 		}

@@ -1,10 +1,14 @@
-﻿namespace ServerItems
+﻿using System;
+using UnityEngine;
+
+namespace ServerItems
 {
+	[Serializable]
 	public class WeaponItem : ItemBase
 	{
-		public int Damage { get; set; }
-		public int Durability { get; set; }
-		public bool IsRanged { get; set; }
+		[field: SerializeField] public int Damage { get; set; }
+		[field: SerializeField] public int Durability { get; set; }
+		[field: SerializeField] public bool IsRanged { get; set; }
 		public override string SerializeItem()
 		{
 			CurrentJsonType = $"{nameof(WeaponItem)}";

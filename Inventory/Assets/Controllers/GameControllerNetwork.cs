@@ -31,6 +31,9 @@ namespace Controllers
 
         private void LoadScene()
         {
+            ItemAPIController.SetConfig(ConfigLoader);
+            PlayerAPIController.SetConfig(ConfigLoader);
+            InventoryAPIController.SetConfig(ConfigLoader);
             SceneManager.LoadScene(1);
         }
     }

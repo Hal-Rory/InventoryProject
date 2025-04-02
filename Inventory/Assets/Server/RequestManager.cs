@@ -5,11 +5,9 @@ namespace Server
 {
 	public static class RequestManager
 	{
-		private static string _apiUrl => GameControllerNetwork.Instance.ConfigLoader.Config.ApiUrl;
-
-		public static UnityWebRequest RequestUploadBuilder(string apiEndpoint, string method, byte[] data, bool isJson = false)
+		public static UnityWebRequest RequestUploadBuilder(string apiUrl, string apiEndpoint, string method, byte[] data, bool isJson = false)
 		{
-			UnityWebRequest request = new UnityWebRequest($"{_apiUrl}/{apiEndpoint}");
+			UnityWebRequest request = new UnityWebRequest($"{apiUrl}/{apiEndpoint}");
 			request.method = method;
 			request.uploadHandler = new UploadHandlerRaw(data);
 			request.downloadHandler = new DownloadHandlerBuffer();
@@ -17,9 +15,9 @@ namespace Server
 			return request;
 		}
 
-		public static UnityWebRequest RequestQueryBuilder(string apiEndpoint, string method, bool isJson = false)
+		public static UnityWebRequest RequestQueryBuilder(string apiUrl, string apiEndpoint, string method, bool isJson = false)
 		{
-			UnityWebRequest request = new UnityWebRequest($"{_apiUrl}/{apiEndpoint}");
+			UnityWebRequest request = new UnityWebRequest($"{apiUrl}/{apiEndpoint}");
 			request.method = method;
 			request.downloadHandler = new DownloadHandlerBuffer();
 			request.SetRequestHeader("Content-Type", isJson ? "application/json" : "text/plain");
