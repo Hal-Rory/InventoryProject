@@ -7,11 +7,12 @@ public class WeightMap
     private List<IWeighted> _weights;
     private int _weightTotal;
 
-    public WeightMap(IEnumerable<IWeighted> weights)
+    public WeightMap(IEnumerable<IWeighted> weights, params IWeighted[] additionalWeights)
     {
         _weights = new List<IWeighted>(weights);
+        _weights.AddRange(additionalWeights);
         _weightTotal = 0;
-        foreach (var weight in _weights)
+        foreach (IWeighted weight in _weights)
         {
             _weightTotal += weight.Rarity;
         }
@@ -25,16 +26,16 @@ public class WeightMap
     /// <returns></returns>
     public IWeighted GetValue()
     {
-        int _randomValue = UnityEngine.Random.Range(1, _weightTotal);
-        int _currentValueRange = 0;
+        int randomValue = UnityEngine.Random.Range(1, _weightTotal);
+        int currentValueRange = 0;
 
-        foreach (var weight in _weights)
+        foreach (IWeighted weight in _weights)
         {
-            if (_randomValue > _currentValueRange && _randomValue <= (_currentValueRange + weight.Rarity))
+            if (randomValue > currentValueRange && randomValue <= (currentValueRange + weight.Rarity))
             {
                 return weight;
             }
-            _currentValueRange += weight.Rarity;
+            currentValueRange += weight.Rarity;
         }
         //this shouldn't happen unless the weight total is wrong
         return null;
