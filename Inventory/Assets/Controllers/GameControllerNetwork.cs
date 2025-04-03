@@ -1,25 +1,23 @@
+using System;
 using Server;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Controllers
 {
     public class GameControllerNetwork : MonoBehaviour
     {
-
         public ItemAPI ItemAPIController;
         public PlayerAPI PlayerAPIController;
         public InventoryAPI InventoryAPIController;
-        public InventoryController Inventory;
         public ConfigLoader ConfigLoader;
+        public event Action OnControllersLoaded;
 
-        public static GameControllerNetwork Instance { get; private set; }
+        public static GameControllerNetwork NetworkInstance { get; private set; }
         private void Awake()
         {
-            if (Instance == null)
+            if (NetworkInstance == null)
             {
-                Instance = this;
-                Inventory = new InventoryController();
+                NetworkInstance = this;
                 DontDestroyOnLoad(this);
                 ConfigLoader.OnConfigLoaded += LoadScene;
             }
@@ -34,7 +32,7 @@ namespace Controllers
             ItemAPIController.SetConfig(ConfigLoader);
             PlayerAPIController.SetConfig(ConfigLoader);
             InventoryAPIController.SetConfig(ConfigLoader);
-            SceneManager.LoadScene(1);
+            OnControllersLoaded?.Invoke();
         }
     }
 }

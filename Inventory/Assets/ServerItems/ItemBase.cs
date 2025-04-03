@@ -26,5 +26,11 @@ namespace ServerItems
 		{
 			return JsonConvert.DeserializeObject<ItemBase>(item, ServerUtilities.JsonSerializer );
 		}
+
+		public bool Matches(ItemBase item)
+		{
+			bool isEqual = item.ItemID == ItemID && item.ItemName == ItemName && item.Ingredients == Ingredients;
+			return isEqual;
+		}
 	}
 }
