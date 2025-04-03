@@ -36,7 +36,7 @@ namespace Server
 			StartCoroutine(GetItemsCO(responseAction));
 		}
 
-		public void API_Update(ItemBase item, Action<bool> responseAction = null)
+		public void API_Update(Item item, Action<bool> responseAction = null)
 		{
 			StartCoroutine(UpdateItemCO(item, responseAction));
 		}
@@ -107,7 +107,7 @@ namespace Server
 			responseAction?.Invoke(innerItems);
 		}
 
-		private IEnumerator UpdateItemCO(ItemBase item, Action<bool> responseAction = null)
+		private IEnumerator UpdateItemCO(Item item, Action<bool> responseAction = null)
 		{
 			string endpoint = _configLoader.ItemEndpoints[EndPoints.Update];
 			string jsonData = JsonConvert.SerializeObject(item);
@@ -120,7 +120,7 @@ namespace Server
 			yield return request.SendWebRequest();
 
 			Debug.Log(request.result == UnityWebRequest.Result.Success
-				? $"{item.ItemID}:{item.ItemName} was updated successfully"
+				? $"{item.ItemId} was updated successfully"
 				: "Error: " + request.error);
 			responseAction?.Invoke(request.result == UnityWebRequest.Result.Success);
 		}

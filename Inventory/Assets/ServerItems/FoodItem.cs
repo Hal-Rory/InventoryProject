@@ -12,7 +12,7 @@ namespace ServerItems
 
 		public override string SerializeItem()
 		{
-			CurrentJsonType = $"{nameof(WeaponItem)}";
+			CurrentJsonType = $"{nameof(FoodItem)}";
 			return base.SerializeItem();
 		}
 
