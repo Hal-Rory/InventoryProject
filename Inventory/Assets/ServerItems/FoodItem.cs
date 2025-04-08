@@ -18,7 +18,7 @@ namespace ServerItems
 
 		public override string ToString()
 		{
-			return $"{ItemName}({(IsConsumable ? "": "Not")}Consumable)\n" +
+			return $"{ItemName}\n({(IsConsumable ? "": "Not")}Consumable)\n" +
 			       $"Calories: {Calories}\n" +
 			       $"Expires: {ExpirationDate}";
 		}

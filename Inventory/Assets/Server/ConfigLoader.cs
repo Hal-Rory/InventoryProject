@@ -20,7 +20,7 @@ namespace Server
 
 		public event Action OnConfigLoaded;
 
-		private void Awake()
+		private void Start()
 		{
 			LoadConfigObject();
 		}
@@ -38,6 +38,10 @@ namespace Server
 			if (request.result == UnityWebRequest.Result.Success)
 			{
 				Config = JsonConvert.DeserializeObject<ConfigData>(request.downloadHandler.text);
+			}
+			else
+			{
+				Debug.LogError("Request for config failed");
 			}
 
 			Config.ApiUrl = _apiUrl;

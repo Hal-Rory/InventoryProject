@@ -17,7 +17,7 @@ namespace ServerItems
 
 		public override string ToString()
 		{
-			return $"{ItemName}({(IsRanged ? "Ranged": "Melee")})\n" +
+			return $"{ItemName}\n({(IsRanged ? "Ranged": "Melee")})\n" +
 			       $"Damage: {Damage}\n" +
 			       $"Durability: {Durability}";
 		}

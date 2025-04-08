@@ -6,6 +6,9 @@ namespace InventoryProject.Models;
 
 public class Player
 {
+	/// <summary>
+	/// This converts the naming convention here to the naming convention of the table in the json object
+	/// </summary>
 	[Key]
 	[Column(HelperVariables.PlayerId)]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

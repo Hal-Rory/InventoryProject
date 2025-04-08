@@ -10,16 +10,16 @@ namespace Controllers
         public PlayerAPI PlayerAPIController;
         public InventoryAPI InventoryAPIController;
         public ConfigLoader ConfigLoader;
-        public event Action OnControllersLoaded;
+        public event Action OnNetworkControllersLoaded;
 
         public static GameControllerNetwork NetworkInstance { get; private set; }
-        private void Awake()
+        protected virtual void Awake()
         {
             if (NetworkInstance == null)
             {
                 NetworkInstance = this;
                 DontDestroyOnLoad(this);
-                ConfigLoader.OnConfigLoaded += LoadScene;
+                ConfigLoader.OnConfigLoaded += LoadControllers;
             }
             else
             {
@@ -27,12 +27,12 @@ namespace Controllers
             }
         }
 
-        private void LoadScene()
+        protected virtual void LoadControllers()
         {
             ItemAPIController.SetConfig(ConfigLoader);
             PlayerAPIController.SetConfig(ConfigLoader);
             InventoryAPIController.SetConfig(ConfigLoader);
-            OnControllersLoaded?.Invoke();
+            OnNetworkControllersLoaded?.Invoke();
         }
     }
 }

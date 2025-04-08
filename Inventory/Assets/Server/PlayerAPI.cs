@@ -119,6 +119,6 @@ namespace Server
 		public string PlayerName { get; set; } = "";
 
 		[JsonIgnore]
-		public HashSet<string> Items;
+		public HashSet<PlayerItem> Items;
 	}
 }
