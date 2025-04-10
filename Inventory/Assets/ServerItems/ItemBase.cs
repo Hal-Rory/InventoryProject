@@ -18,7 +18,7 @@ namespace ServerItems
 		[field: SerializeField] public int Rarity { get; set; }
 
 		[field: SerializeField] public ItemContainer CraftResult { get; set; }
-		[field: SerializeField] public ItemContainer[] Ingredients { get; set; }
+		[field: SerializeField] public ItemContainer[] CraftingIngredients { get; set; }
 
 		public virtual string SerializeItem()
 		{
@@ -39,7 +39,7 @@ namespace ServerItems
 
 		public bool Matches(ItemBase item)
 		{
-			bool isEqual = item.ItemID == ItemID && item.ItemName == ItemName && item.Ingredients == Ingredients;
+			bool isEqual = item.ItemID == ItemID && item.ItemName == ItemName && item.CraftingIngredients == CraftingIngredients;
 			return isEqual;
 		}
 

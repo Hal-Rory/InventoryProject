@@ -58,7 +58,7 @@ namespace Server
 			yield return request.SendWebRequest();
 			Debug.Log(request.result == UnityWebRequest.Result.Success
 				? $"{newItem.ItemId} was created successfully"
-				: "Error: " + request.error);
+				: $"Server error: {request.downloadHandler.text} \n Error: " + request.error);
 			responseAction?.Invoke(request.result == UnityWebRequest.Result.Success);
 		}
 

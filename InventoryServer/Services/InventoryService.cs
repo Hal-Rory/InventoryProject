@@ -128,7 +128,7 @@ public class InventoryService
 	/// <returns></returns>
 	public async Task RemoveInventoryItem(int playerId, string itemId)
 	{
-		await UpdatePlayerItemQuantity(new InventoryItem{Player = playerId, Item = itemId, ItemQuantity = 0});
+		await CreateUpdatePlayerItem(new InventoryItem{Player = playerId, Item = itemId, ItemQuantity = 0});
 	}
 
 	/// <summary>
