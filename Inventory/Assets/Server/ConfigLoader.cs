@@ -52,6 +52,7 @@ namespace Server
 				{ EndPoints.Get, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.GetKeyword, Config.Inventory.Endpoints.Get) },
 				{ EndPoints.GetAll, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.GetAllKeyword, Config.Inventory.Endpoints.GetAll) },
 				{ EndPoints.Update, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Inventory.Endpoints.Update) },
+				{ EndPoints.UpdateMore, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Inventory.Endpoints.UpdateAll) },
 				{ EndPoints.Delete, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.DeleteKeyword, Config.Inventory.Endpoints.Delete) }
 			};
 
@@ -61,6 +62,7 @@ namespace Server
 				{ EndPoints.Get, string.Format(Config.Items.ControllerPath, Config.ApiVersion, Config.GetKeyword, Config.Items.Endpoints.Get) },
 				{ EndPoints.GetAll, string.Format(Config.Items.ControllerPath, Config.ApiVersion, Config.GetAllKeyword, Config.Items.Endpoints.GetAll) },
 				{ EndPoints.Update, string.Format(Config.Items.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Items.Endpoints.Update) },
+				{ EndPoints.UpdateMore, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Items.Endpoints.UpdateAll) },
 				{ EndPoints.Delete, string.Format(Config.Items.ControllerPath, Config.ApiVersion, Config.DeleteKeyword, Config.Items.Endpoints.Delete) }
 			};
 
@@ -70,6 +72,7 @@ namespace Server
 				{ EndPoints.Get, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.GetKeyword, Config.Player.Endpoints.Get) },
 				{ EndPoints.GetAll, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.GetAllKeyword, Config.Player.Endpoints.GetAll) },
 				{ EndPoints.Update, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Player.Endpoints.Update) },
+				{ EndPoints.UpdateMore, string.Format(Config.Inventory.ControllerPath, Config.ApiVersion, Config.UpdateKeyword, Config.Player.Endpoints.UpdateAll) },
 				{ EndPoints.Delete, string.Format(Config.Player.ControllerPath, Config.ApiVersion, Config.DeleteKeyword, Config.Player.Endpoints.Delete) }
 			};
 			OnConfigLoaded?.Invoke();

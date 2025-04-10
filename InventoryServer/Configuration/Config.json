@@ -4,6 +4,7 @@
   "GetKeyword": "Get",
   "GetAllKeyword": "Get-All",
   "UpdateKeyword": "Update",
+  "UpdateAll": "Update",
   "DeleteKeyword": "Remove",
   "Inventory": {
     "ControllerPath": "Inventory/{0}/{1}/{2}",
@@ -12,6 +13,7 @@
       "Get": "PlayerItem?playerId={0}&itemId={1}",
       "GetAll": "PlayerItems?playerId=",
       "Update": "PlayerItem",
+      "UpdateAll": "PlayerItems",
       "Delete": "PlayerItem?playerId={0}&itemId={1}"
     }
   },
@@ -22,6 +24,7 @@
       "Get": "Item?itemId=",
       "GetAll": "Items",
       "Update": "Item",
+      "UpdateAll": "",
       "Delete": "Item?itemId="
     }
   },
@@ -32,6 +35,7 @@
       "Get": "Player?playerId=",
       "GetAll": "Players",
       "Update": "",
+      "UpdateAll": "",
       "Delete": "Player?playerId="
     }
   }

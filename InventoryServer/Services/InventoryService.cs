@@ -1,6 +1,8 @@
-﻿using InventoryProject.Databases;
+﻿using System.Data;
+using InventoryProject.Databases;
 using InventoryProject.Helpers;
 using InventoryProject.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryProject.Services;
@@ -26,7 +28,7 @@ public class InventoryService
 		{
 			throw new KeyNotFoundException($"No inventory item {item.Item} and/or player {item.Player} exists");
 		}
-		await _context.Database.ExecuteSqlRawAsync("EXEC UpdateInventory @p0, @p1, @p2", item.Player, item.Item, item.ItemQuantity);
+		await _context.Database.ExecuteSqlRawAsync("EXEC SetInventory @p0, @p1, @p2", item.Player, item.Item, item.ItemQuantity);
 		return true;
 	}
 
@@ -86,6 +88,36 @@ public class InventoryService
 		updatedItem.ItemQuantity += item.ItemQuantity;
 
 		await _context.SaveChangesAsync();
+	}
+
+	/// <summary>
+	/// Updates multiple items
+	/// </summary>
+	/// <param name="items"></param>
+	/// <returns></returns>
+	public async Task SwapPlayerItems(InventoryItem[] items)
+	{
+		DataTable itemsTable = new DataTable();
+		itemsTable.Columns.Add("Player_ID", typeof(int));
+		itemsTable.Columns.Add("Item_ID", typeof(string));
+		itemsTable.Columns.Add("ItemQuantity", typeof(int));
+
+		foreach (InventoryItem item in items)
+		{
+			if (!await CheckPlayerItem(item.Player, item.Item))
+				throw new KeyNotFoundException($"No inventory item {item.Item} and/or player {item.Player} exists");
+			itemsTable.Rows.Add(item.Player, item.Item, item.ItemQuantity);
+		}
+
+		string paramName = "CraftItems";
+
+		SqlParameter itemsTableParam = new SqlParameter($"@{paramName}", SqlDbType.Structured)
+		{
+			TypeName = "InventoryItems",
+			Value = itemsTable
+		};
+
+		await _context.Database.ExecuteSqlRawAsync($"EXEC UpdateInventories @{paramName}", itemsTableParam);
 	}
 
 	/// <summary>

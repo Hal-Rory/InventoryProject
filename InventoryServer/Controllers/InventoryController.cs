@@ -23,7 +23,7 @@ public class InventoryController : ControllerBase
 	/// <param name="item"></param>
 	/// <returns></returns>
 	[HttpPost("Create/PlayerItem")]
-	public async Task<IActionResult> CreateUpdateInventoryItem(InventoryItem item)
+	public async Task<IActionResult> CreateUpdateInventoryItem([FromBody] InventoryItem item)
 	{
 		bool success = await _inventoryService.CreateUpdatePlayerItem(item);
 		return Ok($"Item {(success ? "" : "not ")}created");
@@ -43,10 +43,17 @@ public class InventoryController : ControllerBase
 		return Ok(items);
 	}
 
-	[HttpPut("Update/PlayerItem")]
-	public async Task<IActionResult> UpdateInventoryItem(InventoryItem item)
+	[HttpPost("Update/PlayerItem")]
+	public async Task<IActionResult> UpdateInventoryItem([FromBody] InventoryItem item)
 	{
 		await _inventoryService.UpdatePlayerItemQuantity(item);
+		return Ok("Item updated");
+	}
+
+	[HttpPost("Update/PlayerItems")]
+	public async Task<IActionResult> UpdateInventoryItems([FromBody] InventoryItem[] items)
+	{
+		await _inventoryService.SwapPlayerItems(items);
 		return Ok("Item updated");
 	}
 

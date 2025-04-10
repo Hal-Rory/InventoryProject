@@ -1,4 +1,5 @@
 using System;
+using Game.Controllers;
 using Newtonsoft.Json;
 using Server;
 using UnityEngine;
@@ -12,8 +13,12 @@ namespace ServerItems
 		public string CurrentJsonType { get; set; }
 		[field: SerializeField] public string ItemName { get; set; } = "";
 		[field: SerializeField] public string ItemID { get; set; } = "";
+		[field: SerializeField] public string Category { get; set; } = "";
+		[field: SerializeField] public string Effect { get; set; }
+		[field: SerializeField] public int Rarity { get; set; }
 
-		[field: SerializeField] public string[] Ingredients { get; set; }
+		[field: SerializeField] public ItemContainer CraftResult { get; set; }
+		[field: SerializeField] public ItemContainer[] Ingredients { get; set; }
 
 		public virtual string SerializeItem()
 		{
@@ -27,10 +32,20 @@ namespace ServerItems
 			return JsonConvert.DeserializeObject<ItemBase>(item, ServerUtilities.JsonSerializer );
 		}
 
+		public static ItemBase[] DeserializeItems(string item)
+		{
+			return JsonConvert.DeserializeObject<ItemBase[]>(item, ServerUtilities.JsonSerializer );
+		}
+
 		public bool Matches(ItemBase item)
 		{
 			bool isEqual = item.ItemID == ItemID && item.ItemName == ItemName && item.Ingredients == Ingredients;
 			return isEqual;
+		}
+
+		public override string ToString()
+		{
+			return $"{ItemName} (Category: {Category})";
 		}
 	}
 }

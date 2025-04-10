@@ -101,7 +101,12 @@ namespace Server
 			{
 				string jsonResponse = request.downloadHandler.text;
 				Item[] items = JsonConvert.DeserializeObject<Item[]>(jsonResponse);
-				innerItems = items.Select(i => ItemBase.DeserializeItem(i.ItemDescription));
+				innerItems = items.Select(i =>
+				{
+					ItemBase newItem = ItemBase.DeserializeItem(i.ItemDescription);
+					Debug.Log($"({(newItem.ItemID == i.ItemId ? "Match" : "Doesn't Match")}) item: '{i.ItemId}' and inner item: '{newItem.ItemID}'");
+					return newItem.ItemID == i.ItemId ? newItem : null;
+				}).Where(item => item != null);
 			}
 			responseAction?.Invoke(innerItems);
 		}
@@ -113,7 +118,7 @@ namespace Server
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(_configLoader.Config.ApiUrl,
 					endpoint,
-					UnityWebRequest.kHttpVerbPUT,
+					UnityWebRequest.kHttpVerbPOST,
 					Encoding.UTF8.GetBytes(jsonData),
 					true);
 			yield return request.SendWebRequest();

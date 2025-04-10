@@ -18,6 +18,7 @@ namespace Server
 		public string Get {get; set;}
 		public string GetAll {get; set;}
 		public string Update {get; set;}
+		public string UpdateAll {get; set;}
 		public string Delete {get; set;}
 	}
 }

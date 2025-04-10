@@ -37,7 +37,7 @@ public class ItemsController : ControllerBase
 	    return Ok(items);
     }
 
-	[HttpPut("Update/Item")]
+	[HttpPost("Update/Item")]
 	public async Task<IActionResult> UpdateItem([FromBody] Item item)
 	{
 		bool success = await _itemService.UpdateItem(item);

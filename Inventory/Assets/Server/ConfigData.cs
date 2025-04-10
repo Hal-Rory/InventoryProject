@@ -5,13 +5,14 @@ namespace Server
 	[Serializable]
 	public class ConfigData
 	{
-		public ConfigData(string apiVersion, string createKeyword, string getKeyword, string getAllKeyword, string updateKeyword, string deleteKeyword, ApiRoutes inventory, ApiRoutes items, ApiRoutes player)
+		public ConfigData(string apiVersion, string createKeyword, string getKeyword, string getAllKeyword, string updateKeyword, string updateAllKeyword, string deleteKeyword, ApiRoutes inventory, ApiRoutes items, ApiRoutes player)
 		{
 			ApiVersion = apiVersion;
 			CreateKeyword = createKeyword;
 			GetKeyword = getKeyword;
 			GetAllKeyword = getAllKeyword;
 			UpdateKeyword = updateKeyword;
+			UpdateAllKeyword = updateAllKeyword;
 			DeleteKeyword = deleteKeyword;
 			Inventory = inventory;
 			Items = items;
@@ -26,6 +27,7 @@ namespace Server
 		public string GetKeyword {get; set;}
 		public string GetAllKeyword {get; set;}
 		public string UpdateKeyword {get; set;}
+		public string UpdateAllKeyword {get; set;}
 		public string DeleteKeyword {get; set;}
 
 		public ApiRoutes Inventory { get; set; }

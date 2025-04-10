@@ -6,6 +6,7 @@ namespace Server
 		Get,
 		GetAll,
 		Update,
+		UpdateMore,
 		Delete
 	}
 }

@@ -39,6 +39,11 @@ namespace Server
 			StartCoroutine(UpdatePlayerItemCO(item, responseAction));
 		}
 
+		public void API_UpdateAll(InventoryItem[] item, Action<bool> responseAction = null)
+		{
+			StartCoroutine(UpdatePlayerItemsCO(item, responseAction));
+		}
+
 		public void API_Delete(int playerId, string itemId, Action<bool> responseAction = null)
 		{
 			StartCoroutine(DeletePlayerItemCO(playerId, itemId, responseAction));
@@ -116,13 +121,31 @@ namespace Server
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(_configLoader.Config.ApiUrl,
 					endpoint,
-					UnityWebRequest.kHttpVerbPUT,
+					UnityWebRequest.kHttpVerbPOST,
 					Encoding.UTF8.GetBytes(jsonData),
 					true);
 			yield return request.SendWebRequest();
 
 			Debug.Log(request.result == UnityWebRequest.Result.Success
 				? $"{item.Player}:{item.Item} was updated successfully"
+				: "Error: " + request.error);
+			responseAction?.Invoke(request.result == UnityWebRequest.Result.Success);
+		}
+
+		private IEnumerator UpdatePlayerItemsCO(InventoryItem[] items, Action<bool> responseAction = null)
+		{
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.UpdateMore];
+			string jsonData = JsonConvert.SerializeObject(items);
+			UnityWebRequest request =
+				RequestManager.RequestUploadBuilder(_configLoader.Config.ApiUrl,
+					endpoint,
+					UnityWebRequest.kHttpVerbPOST,
+					Encoding.UTF8.GetBytes(jsonData),
+					true);
+			yield return request.SendWebRequest();
+
+			Debug.Log(request.result == UnityWebRequest.Result.Success
+				? "Items modified successfully"
 				: "Error: " + request.error);
 			responseAction?.Invoke(request.result == UnityWebRequest.Result.Success);
 		}
