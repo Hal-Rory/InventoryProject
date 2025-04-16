@@ -134,7 +134,7 @@ namespace Server
 
 		private IEnumerator UpdatePlayerItemsCO(InventoryItem[] items, Action<bool> responseAction = null)
 		{
-			string endpoint = _configLoader.InventoryEndpoints[EndPoints.UpdateMore];
+			string endpoint = _configLoader.InventoryEndpoints[EndPoints.UpdateAll];
 			string jsonData = JsonConvert.SerializeObject(items);
 			UnityWebRequest request =
 				RequestManager.RequestUploadBuilder(_configLoader.Config.ApiUrl,

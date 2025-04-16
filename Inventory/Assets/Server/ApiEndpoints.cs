@@ -5,12 +5,13 @@ namespace Server
 	[Serializable]
 	public class ApiEndpoints
 	{
-		public ApiEndpoints(string create, string get, string getAll, string update, string delete)
+		public ApiEndpoints(string create, string get, string getAll, string update, string updateAll, string delete)
 		{
 			Create = create;
 			Get = get;
 			GetAll = getAll;
 			Update = update;
+			UpdateAll = updateAll;
 			Delete = delete;
 		}
 

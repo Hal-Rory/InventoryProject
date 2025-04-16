@@ -4,7 +4,7 @@
   "GetKeyword": "Get",
   "GetAllKeyword": "Get-All",
   "UpdateKeyword": "Update",
-  "UpdateAll": "Update",
+  "UpdateAllKeyword": "Update",
   "DeleteKeyword": "Remove",
   "Inventory": {
     "ControllerPath": "Inventory/{0}/{1}/{2}",

@@ -19,7 +19,8 @@ namespace Controllers
             {
                 NetworkInstance = this;
                 DontDestroyOnLoad(this);
-                ConfigLoader.OnConfigLoaded += LoadControllers;
+                ConfigLoader.OnConfigLoaded += OnConfigLoaded;
+                ConfigLoader.OnConfigFailed += OnConfigFailed;
             }
             else
             {
@@ -27,7 +28,12 @@ namespace Controllers
             }
         }
 
-        protected virtual void LoadControllers()
+        private void OnConfigFailed()
+        {
+
+        }
+
+        protected virtual void OnConfigLoaded()
         {
             ItemAPIController.SetConfig(ConfigLoader);
             PlayerAPIController.SetConfig(ConfigLoader);
